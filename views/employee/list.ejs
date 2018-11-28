@@ -1,0 +1,58 @@
+<!--
+including header content which is common for all pages
+-->
+<%- include ../layouts/header.ejs %>
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>    
+ 
+<table width='80%' border=0>
+ 
+    <tr style='text-align:left; background-color:#CCC'>
+        <th>Last Name</th>
+        <th>First Name</th>
+		<th>Gender</th>
+		<th>Date of Birth</th>
+		<th>Hire Date</th>
+    </tr>
+    
+    <!--
+        Using FOREACH LOOP for the employees array
+        
+        myArray.forEach(function(el, index) {
+            // el - current element, i - index
+        });
+    -->
+    <% if (data) { %>
+    <% data.forEach(function(employee){ %>
+        <tr>
+            <td><%= employee.last_name %></td>
+            <td><%= employee.first_name %></td>
+            <td><%= employee.gender %></td>
+			<td><%= employee.birth_date.toDateString() %></td>
+			<td><%= employee.hire_date.toDateString() %></td>
+			
+            <td>
+                <div style="float:left">
+                    <a href='/employees/edit/<%= employee.emp_no %>'>Edit</a> &nbsp;                            
+                    <form method="post" action="/employees/delete/<%= employee.emp_no %>" style="float:right">
+                        <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
+                        <input type="hidden" name="_method" value="DELETE" />
+                    </form>
+                </div>
+            </td>
+        </tr>
+    <% }) %>
+    <% } %>
+ 
+</table>
+ 
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>
